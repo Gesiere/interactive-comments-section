@@ -23,22 +23,21 @@ export const reducer = (state: CommentsStateType, action: ReducerAction) => {
         }
         case REDUCER_ACTION.ADD_REPLY: {
             const newState =  {...state}
-         
             
-            const parentIndex = newState.comments.findIndex(
-              (comment) =>
-                comment.id === action.payload.parentId ||
-                comment.replies.some((reply) => reply.id === parentIndex)
-            )
-            console.log(newState.comments[parentIndex]);
-
-                newState.comments[parentIndex].replies.push(
+            console.log('parentId', action.payload.parentId);
+            
+            
+            // const parentIndex = newState.comments.findIndex(
+            //   (comment) =>
+            //     comment.id === action.payload.parentId ||
+            //     comment.replies.some((reply) => reply.id === parentIndex)
+            // )
+         
+            //     console.log(parentIndex);
+                
+                newState.comments[action.payload.parentId - 1].replies.push(
                         action.payload.data
                 )
-
-                
-
-                // console.log(newState.comments[parentIndex].replies);
                 
 
             

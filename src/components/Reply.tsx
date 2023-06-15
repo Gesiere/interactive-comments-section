@@ -37,7 +37,7 @@ const Reply = ({ type, buttonLabel, replyingTo, parentId}: PropType) => {
         const data = {
           id: performance.now(),
           content: comment,
-          createdAt: `${new Date()}`,
+          createdAt: `${new Date().getTime()}`,
           score: 0,
           user: currentUser,
           replyingTo: replyingTo,
