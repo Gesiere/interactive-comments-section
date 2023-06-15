@@ -1,0 +1,55 @@
+
+*,
+*::before,
+*::after{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+body{
+  min-height: 100vh;
+  font-family: 'Rubik', sans-serif;
+  background-color:#f5f6fa ;
+
+}
+
+
+img{
+  display: block;
+}
+
+input:focus,
+input:focus-within{
+  border: none;
+  outline: none;
+}
+
+.replies{
+  position: relative;
+}
+
+.replies .line::before{
+  content: '';
+  height: 100%;
+  left: -20px;
+  width: 2px;
+  position: absolute;
+  background-color: hsl(223, 19%, 93%);
+}
+
+textarea{
+ 
+  @media (max-width: 768px) {
+    grid-column: 1/4;
+    grid-row: 1/4
+    
+  }
+}
+.send-btn{
+  @media (max-width: 768px) {
+    grid-column: 3/4;
+    
+  }
+}
