@@ -21,7 +21,7 @@ const initializer = (initialValue = initState) => {
 
 
 
-const useCommentsContext = (initState : CommentsStateType) => {
+const useCommentsContext = () => {
     const [state,dispatch] = useReducer(reducer, initializer())
 
      useEffect(() => {
@@ -58,7 +58,7 @@ const CommentsContext = createContext<UseCommentsContextType>(initCommentContext
 
 export const AppProvider = ({children} : ChildrenType) => {
     return (
-        <CommentsContext.Provider value={useCommentsContext(initState)}>
+        <CommentsContext.Provider value={useCommentsContext()}>
             {children}
         </CommentsContext.Provider>
     )
