@@ -1,43 +1,50 @@
 import { useState } from "react"
 import { useGlobalCommentsContext } from "../commetsHooks/CommentsProvider"
-import { Comments, REDUCER_ACTION, Replies } from "../models/model"
-
-type PropType ={
-  replyingTo?: string,
-  buttonLabel: string,
-  type: REDUCER_ACTION,
-  parentId?: number,
-  addNewComment?: (newReply: Replies | Comments) => void
+import {  REDUCER_ACTION } from "../models/model"
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
+type PropType = {
+  replyingTo?: string
+  buttonLabel: string
+  type: REDUCER_ACTION
+  parentId?: number
+  setIsReply?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 
-const Reply = ({ type, buttonLabel, replyingTo, parentId}: PropType) => {
+const Reply = ({setIsReply, type, buttonLabel, replyingTo, parentId}: PropType) => {
+    TimeAgo.addLocale(en)
+    const timeAgo = new TimeAgo("en-US");
     const {state, dispatch, reducerAction} = useGlobalCommentsContext()
+    const replyingToUser = replyingTo ? `@${replyingTo}`: ''
     const currentUser = state.currentUser
 
-    const [comment, setComment] = useState('')
+    const [comment, setComment] = useState(replyingToUser)
+    
+
+    
 
     const handleSubmit = () => {
       if(comment === "") return
-   
         
       if(type === reducerAction.ADD_COMMENT){
           const newComment = {
             id: performance.now(),
             content: comment,
-            createdAt: `${new Date()}`,
+            createdAt: timeAgo.format(new Date()),
             score: 0,
             user: currentUser,
             replies: [],
           }
+          
           dispatch({type: type, payload: newComment})
 
       }
       if(type === reducerAction.ADD_REPLY){
         const data = {
           id: performance.now(),
-          content: comment,
-          createdAt: `${new Date().getTime()}`,
+          content: comment.replace(replyingToUser, ''),
+          createdAt: timeAgo.format(new Date()),
           score: 0,
           user: currentUser,
           replyingTo: replyingTo,
@@ -46,18 +53,20 @@ const Reply = ({ type, buttonLabel, replyingTo, parentId}: PropType) => {
           data,
           parentId
         }
+
         
         dispatch({type: type, payload: payload})
+        setIsReply!(false)
       }
       setComment('')
-      state.isReply = null
+  
       
       
 
      
     }
   return (
-    <div className="bg-white max-[768px]:items-center rounded-md m-4 p-4 grid max-[768px]:grid-rows-[auto] grid-cols-[auto_1fr_auto] gap-4">
+    <div className="bg-white ease-in duration-1000 max-[768px]:items-center rounded-md my-4 p-4 grid max-[768px]:grid-rows-[auto] grid-cols-[auto_1fr_auto] gap-4">
       <img
         className="w-[2rem]"
         src={`${currentUser.image.png}`}
@@ -68,13 +77,14 @@ const Reply = ({ type, buttonLabel, replyingTo, parentId}: PropType) => {
         placeholder="Add a comment..."
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        className="p-4 rounded-md border-solid border-2 border-grayBlue "
+        className="focus:outline-none focus:border-moderateBlue p-4 rounded-md border-solid border-2 border-grayBlue "
         name="reply"
         id="reply"
       ></textarea>
-      <button 
-      onClick={handleSubmit}
-      className="send-btn md:h-[3rem] rounded-md bg-moderateBlue text-white py-2 px-8">
+      <button
+        onClick={handleSubmit}
+        className="hover:opacity-25 duration-400 ease-in-out send-btn md:h-[3rem] rounded-md bg-moderateBlue text-white py-2 px-8"
+      >
         {buttonLabel}
       </button>
     </div>

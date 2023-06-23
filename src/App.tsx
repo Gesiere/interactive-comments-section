@@ -2,7 +2,9 @@
 import './App.css'
 import CommentsContainer from './components/CommentsContainer'
 
+
 function App() {
+
 
 
   return (
@@ -10,7 +12,7 @@ function App() {
       <section className="">
         <CommentsContainer />
       </section>
- 
+     
     </main>
   )
 }

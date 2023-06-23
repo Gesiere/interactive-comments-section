@@ -1,6 +1,6 @@
 import { ReactElement } from "react"
 
-export type Comments = {
+export interface Comments{
     id: number,
     content: string,
     createdAt: string,
@@ -9,12 +9,7 @@ export type Comments = {
     replies: Replies []
 }
 
-export type Replies = {
-  id: number
-  content: string
-  createdAt: string
-  score: number
-  user: User,
+export interface Replies extends Comments{
   replyingTo: string
 }
 
@@ -31,13 +26,17 @@ export enum REDUCER_ACTION {
   HANDLE_REPLY,
   ADD_REPLY,
   ADD_COMMENT,
+  UPVOTE,
+  DOWNVOTE,
+  UPDATE,
+  DELETE_COMMENT
   
 }
 
 export type CommentsStateType = {
     comments:Comments[],
     currentUser: CurrentUser,
-    isReply: any
+   
 }
 
 export type User = {

@@ -1,6 +1,6 @@
 import { ChildrenType, CommentsStateType, REDUCER_ACTION, } from "../models/model"
 import data from '../../data.json'
-import { createContext, useContext, useReducer, useMemo } from "react"
+import { createContext, useContext, useReducer, useMemo, useEffect } from "react"
 import { reducer } from "./ReducerAction"
 
 
@@ -8,23 +8,38 @@ import { reducer } from "./ReducerAction"
 const initState:CommentsStateType = {
     comments:  data.comments,
     currentUser: data.currentUser,
-    isReply: false
+}
+
+const initializer = (initialValue = initState) => {
+  const localData = localStorage.getItem('comments')
+  if (localData) {
+    return JSON.parse(localData)
+  } else {
+    return initialValue
+  }
 }
 
 
+
 const useCommentsContext = (initState : CommentsStateType) => {
-    const [state,dispatch] = useReducer(reducer, initState)
+    const [state,dispatch] = useReducer(reducer, initializer())
+
+     useEffect(() => {
+       localStorage.setItem('comments', JSON.stringify(state))
+     }, [state])
     
     const reducerAction = useMemo(() => {
       return REDUCER_ACTION
     }, [])
 
-    const handleReply = (isReply: any) => {
-        dispatch({type:reducerAction.HANDLE_REPLY, payload: isReply})
+    const updateComments = (id: number, content: string) => {
+        dispatch({type: reducerAction.UPDATE, payload:{id, content}})
     }
 
+
+
     return {
-        state, reducerAction,dispatch, handleReply
+        state, reducerAction,dispatch, updateComments
     }
 }
 
@@ -34,7 +49,8 @@ const initCommentContextState: UseCommentsContextType = {
   state: initState,
   reducerAction: REDUCER_ACTION,
   dispatch: () => {},
-  handleReply: () => {}
+  updateComments: () => {}
+  
 
 }
 

@@ -2,6 +2,8 @@ import { useGlobalCommentsContext } from '../commetsHooks/CommentsProvider'
 
 
 
+
+
 import Reply from './Reply'
 
 import SingleComments from './SingleComments'
@@ -15,13 +17,13 @@ const CommentsContainer = () => {
       {state.comments.map((comment, index) => 
       (
         <div key={index}>
-          <SingleComments parentId={comment.id} comments={comment}  />
+          <SingleComments parentId={comment.id} {...comment}  />
 
-          {(comment.replies.length !== 0 || state.isReply) && (
+          {comment.replies.length !== 0  && (
             <div className="replies max-w-[90%] md:max-w-[600px] ml-auto">
               <div className="line">
                 {comment.replies.map((replies, index) => (
-                  <SingleComments parentId={comment.id} comments={replies} key={index}/>
+                  <SingleComments parentId={comment.id} {...replies} key={index}/>
                 ))}
               </div>
             </div>
