@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { useGlobalCommentsContext } from "../commetsHooks/CommentsProvider"
 import { User } from "../models/model"
 interface PropType {
@@ -8,8 +9,27 @@ interface PropType {
 
 const CommentsUpvotes = ({score, id, user}: PropType) => {
 const {state, dispatch, reducerAction} = useGlobalCommentsContext()
+const [voted, setVoted] = useState<boolean>()
 
 const currentUser = state.currentUser
+
+const upVote = () => {
+    if(currentUser.username === user.username) return
+    
+    if(voted === false) {
+        dispatch({ type: reducerAction.UPVOTE, payload: { id, score} })
+        setVoted(true)
+    }
+    
+}
+const downVote = () => {
+    if(currentUser.username === user.username) return
+
+    if(voted === true){
+        dispatch({ type: reducerAction.DOWNVOTE, payload: { id, score } })
+        setVoted(false)
+    }
+}
 
 
   return (
@@ -17,7 +37,7 @@ const currentUser = state.currentUser
       <button
         className="group ease-in-out duration-400"
         onClick={() =>
-          dispatch({ type: reducerAction.UPVOTE, payload: { id } })
+          upVote()
         }
         disabled={currentUser.username === user.username}
       >
@@ -33,9 +53,9 @@ const currentUser = state.currentUser
       <button
         className=" group ease-in-out duration-400"
         onClick={() =>
-          dispatch({ type: reducerAction.DOWNVOTE, payload: { id, score } })
+        downVote()
         }
-        disabled={currentUser.username === user.username}
+        // disabled={currentUser.username === user.username}
       >
         <svg width="11" height="3" xmlns="http://www.w3.org/2000/svg">
           <path

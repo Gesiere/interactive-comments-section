@@ -17,7 +17,8 @@ type ReducerAction = | {
 } | {
     type: REDUCER_ACTION.UPVOTE,
     payload: {
-        id: number
+        id: number,
+        score: number
     }
 } | {
     type: REDUCER_ACTION.DOWNVOTE,
@@ -58,15 +59,17 @@ export const reducer = (state: CommentsStateType, action: ReducerAction) => {
             
         }
         case REDUCER_ACTION.UPVOTE: {
-            const {id} = action.payload
-
-              const currentComments = state.comments.map((c) => {
+            const {id, score} = action.payload
+            let currentScore = score
+            
+            const currentComments = state.comments.map((c) => {
                 c.replies = c.replies.map((reply) => {
-                  if (reply.id === id) reply.score = reply.score + 1
+                    // if(currentScore !== reply.score) return
+                  if (reply.id === id) reply.score = currentScore + 1
   
                   return reply
                 })
-                if (c.id === id) c.score = c.score + 1
+                if (c.id === id) c.score = currentScore + 1
                 return c
               })
             return {...state, comments: currentComments}
