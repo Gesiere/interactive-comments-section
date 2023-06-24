@@ -63,10 +63,7 @@ export const reducer = (state: CommentsStateType, action: ReducerAction) => {
               const currentComments = state.comments.map((c) => {
                 c.replies = c.replies.map((reply) => {
                   if (reply.id === id) reply.score = reply.score + 1
-                  reply.replies = reply.replies.map((r) => {
-                    if (r.id === id) r.score = reply.score + 1
-                    return r
-                  })
+  
                   return reply
                 })
                 if (c.id === id) c.score = c.score + 1
@@ -83,10 +80,6 @@ export const reducer = (state: CommentsStateType, action: ReducerAction) => {
               const currentComments = state.comments.map((c) => {
                 c.replies = c.replies.map((reply) => {
                   if (reply.id === id) reply.score = currentScore - 1
-                  reply.replies = reply.replies.map((r) => {
-                    if (r.id === id) r.score = currentScore - 1
-                    return r
-                  })
                   return reply
                 })
                 if (c.id === id) c.score = currentScore - 1
