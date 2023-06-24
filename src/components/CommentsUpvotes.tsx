@@ -9,12 +9,12 @@ interface PropType {
 
 const CommentsUpvotes = ({score, id, user}: PropType) => {
 const {state, dispatch, reducerAction} = useGlobalCommentsContext()
-const [voted, setVoted] = useState<boolean>()
+const [voted, setVoted] = useState<boolean>(false)
 
 const currentUser = state.currentUser
 
 const upVote = () => {
-    if(currentUser.username === user.username) return
+    // if(currentUser.username === user.username) return
     
     if(voted === false) {
         dispatch({ type: reducerAction.UPVOTE, payload: { id, score} })
@@ -23,7 +23,7 @@ const upVote = () => {
     
 }
 const downVote = () => {
-    if(currentUser.username === user.username) return
+    // if(currentUser.username === user.username) return
 
     if(voted === true){
         dispatch({ type: reducerAction.DOWNVOTE, payload: { id, score } })

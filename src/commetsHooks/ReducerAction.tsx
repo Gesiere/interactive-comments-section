@@ -64,7 +64,6 @@ export const reducer = (state: CommentsStateType, action: ReducerAction) => {
             
             const currentComments = state.comments.map((c) => {
                 c.replies = c.replies.map((reply) => {
-                    // if(currentScore !== reply.score) return
                   if (reply.id === id) reply.score = currentScore + 1
   
                   return reply
