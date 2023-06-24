@@ -14,8 +14,6 @@ const [voted, setVoted] = useState<boolean>(false)
 const currentUser = state.currentUser
 
 const upVote = () => {
-    // if(currentUser.username === user.username) return
-    
     if(voted === false) {
         dispatch({ type: reducerAction.UPVOTE, payload: { id, score} })
         setVoted(true)
@@ -23,7 +21,6 @@ const upVote = () => {
     
 }
 const downVote = () => {
-    // if(currentUser.username === user.username) return
 
     if(voted === true){
         dispatch({ type: reducerAction.DOWNVOTE, payload: { id, score } })
@@ -55,7 +52,7 @@ const downVote = () => {
         onClick={() =>
         downVote()
         }
-        // disabled={currentUser.username === user.username}
+        disabled={currentUser.username === user.username}
       >
         <svg width="11" height="3" xmlns="http://www.w3.org/2000/svg">
           <path
